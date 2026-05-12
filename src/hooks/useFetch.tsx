@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
-import { fetchRecipieCategories } from "../services/recipieService";
+import type { FetchInputProps } from "../types/hooks";
 
-function useFetch(){
+function useFetch<T>({serviceFun} : FetchInputProps<T>) {
+    const [data, setData] = useState<T[]>([]);
 
-    const[data, setData] = useState([]);
-
-    useEffect(()=>{
-        const fetchData = async() =>{
-             const resp = await fetchRecipieCategories();
-         setData(resp);
-        }
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await serviceFun();
+            setData(result);
+        };
         fetchData();
-    },[])
+    }, [serviceFun]);
 
-  return (data);
+    return data;
 }
 
 export default useFetch;
