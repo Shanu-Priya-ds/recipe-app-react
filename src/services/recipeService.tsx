@@ -28,7 +28,7 @@ export async function fetchRecipiesByCategory(categoryName:string):Promise<Recip
             throw new Error(`HTTP error: ${response.status}`);
         }
     }catch(ex){
-        console.log(`Failed to fetch recipies for the food category: ${categoryName} `);
+        console.log(`Failed to fetch recipes for the food category: ${categoryName} `);
         return [];
     }finally{
 
@@ -43,12 +43,31 @@ export async function fetchRecipeDetailsById(recipeId:string):Promise<RecipeDeta
             const data = await response.json();
             return data.meals;
         }else{
-            throw Error("");
+            throw Error(`HTTP Error: ${response.status}`);
         }
     }catch(ex){
+        console.log(`Failed to fetch recipes for the recipe Id: ${recipeId}`)
         return [];
     }finally{
 
     }
 
+}
+
+export async function searchRecipies(searchValue:string):Promise<RecipeDetails[]>{
+    
+    try{
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`);
+        if(response.ok){
+            const data = await response.json();
+            console.log(data);
+            return data.meals;
+        }else{
+            throw Error(`HTTP Error: ${response.status}`);
+        }
+
+    }catch(ex){
+        console.log(`Failed to fetch recipes for the search value ${searchValue}`);
+        return [];
+    }
 }
