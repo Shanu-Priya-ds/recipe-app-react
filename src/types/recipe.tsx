@@ -6,7 +6,7 @@ export interface Category {
 }
 
 
-export interface Recipie{
+export interface Recipe{
 strMeal:string;
 strMealThumb:string;
 idMeal:string;
@@ -14,7 +14,7 @@ strArea:string;
 strCountry:string;
 }
 
-export interface RecipieDetails{
+export interface RecipeDetails{
     idMeal: string;
     strMeal: string; 
     strMealAlternate : string;
@@ -46,4 +46,6 @@ export interface RecipieDetails{
     strImageSource : string;
     strCreativeCommonsConfirmed : string;
     dateModified : string;
+    strInstructions : string;
+    
 }

@@ -1,4 +1,4 @@
-import type { Category, Recipie } from "../types/recepie";
+import type { Category, Recipe, RecipeDetails } from "../types/recipe";
 
 export async function fetchRecipieCategories(): Promise<Category[]> {
     try {
@@ -18,7 +18,7 @@ export async function fetchRecipieCategories(): Promise<Category[]> {
 }
 
 
-export async function fetchRecipiesByCategory(categoryName:string):Promise<Recipie[]>{
+export async function fetchRecipiesByCategory(categoryName:string):Promise<Recipe[]>{
     try{
         const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`);
         if(response.ok){
@@ -33,4 +33,22 @@ export async function fetchRecipiesByCategory(categoryName:string):Promise<Recip
     }finally{
 
     }
+}
+
+export async function fetchRecipeDetailsById(recipeId:string):Promise<RecipeDetails[]>{
+
+    try{
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
+        if(response.ok){
+            const data = await response.json();
+            return data.meals;
+        }else{
+            throw Error("");
+        }
+    }catch(ex){
+        return [];
+    }finally{
+
+    }
+
 }
