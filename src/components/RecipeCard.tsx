@@ -10,9 +10,9 @@ function RecipeCard({ recipeDetails }: { recipeDetails: RecipeDetails | null }) 
             <div className="flex flex-col gap-5 mx-5 my-10 items-center">
                 <h1 className="text-xl font-bold">{recipeDetails.strMeal}</h1>
                 <figure>
-                <img className="w-100 h-100 object-contain" src={recipeDetails.strMealThumb} 
+                <img className="w-100 h-100 object-contain rounded-xl" src={recipeDetails.strMealThumb} 
                 alt={recipeDetails.strMeal} />
-                <figcaption>Country: {recipeDetails.strCountry}, Cuisine: {recipeDetails.strArea}</figcaption>
+                <figcaption>Category: {recipeDetails.strCategory}, Cuisine: {recipeDetails.strArea}</figcaption>
                 </figure>
                 <div className="m-2">
                     <h3 className="text-xl font-semibold">Ingredients:</h3>

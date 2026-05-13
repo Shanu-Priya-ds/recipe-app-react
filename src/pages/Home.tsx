@@ -11,11 +11,11 @@ function Home() {
     }, [data]);
 
     return (<>
-        <h1 className="text-4xl text-center m-5">Recipie Category</h1>
+        <h1 className="text-4xl text-center m-5">Recipe Category</h1>
         <div className="flex flex-wrap justify-center">
             {data.map(category => (
                 <div
-                    className="w-100 border-1 rounded-lg border-black flex flex-col 
+                    className="w-100  shadow-lg rounded-lg flex flex-col 
                     flex-wrap gap-5 p-5 m-5 place-items-center"
                     key={category.idCategory}>
                     <Link to={`/category/${category.strCategory}`} >
