@@ -2,7 +2,6 @@ import { useSearchParams } from "react-router-dom";
 import RecipeCard from "../components/RecipeCard";
 import useFetch from "../hooks/useFetch";
 import { searchRecipies } from "../services/recipeService";
-import RecipeDetails from "./RecipeDetails";
 
 function SearchResults(){
 

@@ -1,9 +1,14 @@
+import { useContext } from "react";
 import type { RecipeDetails } from "../types/recipe";
+import { FavoritesContext } from "../context/FavoritesContext ";
+import fav from "../assets/fav.png"
 
 function RecipeCard({ recipeDetails }: { recipeDetails: RecipeDetails | null }) {
 
     const instructionsArray = recipeDetails?.strInstructions.split(".");
     console.log(instructionsArray);
+
+    const {isFavouriteRecipe, toggleFavourites} = useContext(FavoritesContext);
 
     return (<>
         {recipeDetails ?
@@ -12,6 +17,8 @@ function RecipeCard({ recipeDetails }: { recipeDetails: RecipeDetails | null }) 
                 <figure>
                 <img className="w-100 h-100 object-contain rounded-xl" src={recipeDetails.strMealThumb} 
                 alt={recipeDetails.strMeal} />
+                <img src={fav} alt="Favourite Icon" onClick={toggleFavourites}
+                title={isFavouriteRecipe? "Remove from favourite" :"Add to favourites"}/>
                 <figcaption>Category: {recipeDetails.strCategory}, Cuisine: {recipeDetails.strArea}</figcaption>
                 </figure>
                 <div className="m-2">
