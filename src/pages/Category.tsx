@@ -1,35 +1,27 @@
 import { useEffect } from "react";
 import useFetch from "../hooks/useFetch";
-import { fetchRecipieCategories } from "../services/recipieService";
+import { fetchRecipiesByCategory } from "../services/recipieService";
 
-function Category() {
-    const data = useFetch({serviceFun: fetchRecipieCategories});
+function Category({categoryName}: {categoryName:string}){
 
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
+    const categoryRecipies = useFetch({serviceFun: ()=>fetchRecipiesByCategory(categoryName)});
 
-    const handlePageRedirect = () => {
+    useEffect(()=>{
+        console.log(categoryRecipies);
+    },[categoryRecipies])
 
-    };
-
-    return (<>
-        <h1 className="text-4xl text-center m-5">Recipie Category</h1>
-        <div className="flex flex-wrap justify-center">
-            {data.map(category => (
-                <div
-                    onClick={handlePageRedirect}
-                    className="w-100 border-1 rounded-lg border-black flex flex-col flex-wrap gap-5 p-5 m-5 place-items-center"
-                    key={category.idCategory}
-                >
-                    <img src={category.strCategoryThumb}/>
-                    <h3>{category.strCategory}</h3>
-                    <p>{category.strCategoryDescription}</p>
-                </div>
-            ))}
+    return (<div className="flex flex-wrap">
+    {categoryRecipies && categoryRecipies.map(recipie=>
+        <div key={recipie.idMeal} className="flex w-80 flex-col m-5  border-black border-1 rounded-xl overflow-hidden">
+            <img src={recipie.strMealThumb}/>
+            <div className="p-3 text-center">
+            <h3 className="text-xl pb-2">{recipie.strMeal}</h3>
+            <p>Country: {recipie.strCountry}</p>
+            <p>Cuisine: {recipie.strArea}</p>
+            </div>
         </div>
-        </>
-    );
+    )}
+    </div>);
 }
 
 export default Category;

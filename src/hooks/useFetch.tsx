@@ -8,9 +8,10 @@ function useFetch<T>({serviceFun} : FetchInputProps<T>) {
         const fetchData = async () => {
             const result = await serviceFun();
             setData(result);
+            console.log(result);
         };
         fetchData();
-    }, [serviceFun]);
+    }, []);
 
     return data;
 }
