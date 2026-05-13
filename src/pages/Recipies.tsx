@@ -3,7 +3,7 @@ import useFetch from "../hooks/useFetch";
 import { fetchRecipiesByCategory } from "../services/recipieService";
 import { useParams } from "react-router-dom";
 
-function Category(){
+function Recipies(){
 
     const {categoryName} = useParams();
     const categoryRecipies = (categoryName && categoryName!=="") ?
@@ -28,4 +28,4 @@ function Category(){
     </div>);
 }
 
-export default Category;
+export default Recipies;
