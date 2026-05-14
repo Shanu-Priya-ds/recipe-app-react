@@ -1,25 +1,38 @@
 import { useContext } from "react";
 import type { RecipeDetails } from "../types/recipe";
 import { FavoritesContext } from "../context/FavoritesContext ";
-import fav from "../assets/fav.png"
+import fav from "../assets/fav.png";
+import fav_red from "../assets/fav_red.png";
 
 function RecipeCard({ recipeDetails }: { recipeDetails: RecipeDetails | null }) {
 
-    const instructionsArray = recipeDetails?.strInstructions.split(".");
-    console.log(instructionsArray);
+    if (recipeDetails == null) return;
 
-    const {isFavouriteRecipe, toggleFavourites} = useContext(FavoritesContext);
+    const instructionsArray = recipeDetails?.strInstructions.split(".");
+    //console.log(instructionsArray);
+
+    const { addFavRecipes, removeFavRecipes, favRecipes } = useContext(FavoritesContext);
+
+    const toggleFavourites = () => {
+        if (favRecipes.includes(recipeDetails.idMeal))
+            removeFavRecipes(recipeDetails.idMeal);
+        else
+            addFavRecipes(recipeDetails.idMeal);
+    }
 
     return (<>
         {recipeDetails ?
             <div className="flex flex-col gap-5 mx-5 my-10 items-center">
                 <h1 className="text-xl font-bold">{recipeDetails.strMeal}</h1>
-                <figure>
-                <img className="w-100 h-100 object-contain rounded-xl" src={recipeDetails.strMealThumb} 
-                alt={recipeDetails.strMeal} />
-                <img src={fav} alt="Favourite Icon" onClick={toggleFavourites}
-                title={isFavouriteRecipe? "Remove from favourite" :"Add to favourites"}/>
-                <figcaption>Category: {recipeDetails.strCategory}, Cuisine: {recipeDetails.strArea}</figcaption>
+                <figure className="relative">
+                    <img className="w-100 h-100 object-contain rounded-xl" src={recipeDetails.strMealThumb}
+                        alt={recipeDetails.strMeal} />
+                        <div  className=" absolute top-1 right-3 cursor-pointer" onClick={toggleFavourites}>
+                    {favRecipes.includes(recipeDetails.idMeal) ?<span title="Remove from favourtie">&#x2764;</span> 
+                     : <img src={fav} alt="Favourite Icon"
+                        title= "Add to favourites"
+                        />}</div>
+                    <figcaption>Category: {recipeDetails.strCategory}, Cuisine: {recipeDetails.strArea}</figcaption>
                 </figure>
                 <div className="m-2">
                     <h3 className="text-xl font-semibold">Ingredients:</h3>
@@ -34,8 +47,8 @@ function RecipeCard({ recipeDetails }: { recipeDetails: RecipeDetails | null }) 
                     </ol>
                     {instructionsArray && <div><h3 className="text-xl font-semibold">Instructions:</h3>
                         <div className="pl-10 py-5">
-                        {instructionsArray.map((instruction) => <li>{instruction}.</li>)}</div>
-                        </div>}
+                            {instructionsArray.map((instruction) => <li>{instruction}.</li>)}</div>
+                    </div>}
                     {recipeDetails.strSource && <a href={recipeDetails.strSource} target="_blank">Source</a>}
                     {recipeDetails.strYoutube && <a href={recipeDetails.strYoutube} target="_blank"> YouTube</a>}
                 </div>
