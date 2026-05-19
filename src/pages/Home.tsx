@@ -2,14 +2,16 @@ import { useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 import { fetchRecipieCategories } from "../services/recipeService";
 import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 function Home() {
-    const data = useFetch({ serviceFun: fetchRecipieCategories });
+    const {data, loading} = useFetch({ serviceFun: fetchRecipieCategories });
 
     useEffect(() => {
         console.log(data);
     }, [data]);
 
+    if(loading) return <Spinner/>
     return (<>
         <h1 className="text-4xl text-center m-5">Recipe Category</h1>
         <div className="flex flex-wrap justify-center">

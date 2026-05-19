@@ -3,25 +3,30 @@ import { useSearchParams } from "react-router-dom";
 import RecipeCard from "../components/RecipeCard";
 import useFetch from "../hooks/useFetch";
 import { searchRecipies } from "../services/recipeService";
-import type { Recipe } from "../types/recipe";
+import type { RecipeDetails } from "../types/recipe";
+import Spinner from "../components/Spinner";
 
 function SearchResults(){
 
     const [queryParam] = useSearchParams();
     const searchValue = queryParam.get("query");
-    const searchResults = useFetch({serviceFun:()=> searchValue? searchRecipies(searchValue):Promise.resolve([])});
+    const { data: searchResults, loading } = useFetch({
+        serviceFun: () => searchValue ? searchRecipies(searchValue) : Promise.resolve([])
+    });
 
     useEffect(() => {
         if (searchResults.length > 0) {
-            const existing: Recipe[] = JSON.parse(localStorage.getItem("allRecipes") || "[]");
+            const existing: RecipeDetails[] = JSON.parse(localStorage.getItem("allRecipes") || "[]");
             const existingIds = new Set(existing.map(r => r.idMeal));
             const newOnes = searchResults.filter(r => !existingIds.has(r.idMeal));
             localStorage.setItem("allRecipes", JSON.stringify([...existing, ...newOnes]));
         }
     }, [searchResults]);
 
-    return(<>{searchResults && searchResults.length>0 ?
-        searchResults.map((recipie)=><RecipeCard recipeDetails={recipie}/>) :
+    if (loading) return <Spinner/>;
+
+    return(<>{searchResults && searchResults.length > 0 ?
+        searchResults.map((recipe) => <RecipeCard key={recipe.idMeal} recipeDetails={recipe}/>) :
         <span>No data Available</span>
     }</>)
 }

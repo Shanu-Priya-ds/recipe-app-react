@@ -3,16 +3,17 @@ import {FavoritesContext} from "../context/FavoritesContext ";
 import RecipeCard from "../components/RecipeCard";
 import useFetch from "../hooks/useFetch";
 import { fetchMultipleRecipiesById } from "../services/recipeService";
+import Spinner from "../components/Spinner";
 
 function Favourites(){
 
     const {favRecipes} = useContext(FavoritesContext);
-     const favoriteRecipes = useFetch({
+     const {data, loading} = useFetch({
         serviceFun: () => fetchMultipleRecipiesById(favRecipes)
     });
-
+    if(loading) return (<Spinner/>)
     return <>{favRecipes.length>0 ?
-    favoriteRecipes.map((recipe)=> <RecipeCard key={recipe.idMeal} recipeDetails={recipe}/>)
+    data.map((recipe)=> <RecipeCard key={recipe.idMeal} recipeDetails={recipe}/>)
      : <div>No favorites yet</div>}
      </>
 }
