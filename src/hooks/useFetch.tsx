@@ -4,17 +4,24 @@ import type { FetchInputProps } from "../types/hooks";
 function useFetch<T>({serviceFun} : FetchInputProps<T>) {
     const [data, setData] = useState<T[]>([]);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         let timeoutId: ReturnType<typeof setTimeout>;
         const fetchData = async () => {
-            setLoading(true);
-            const result = await serviceFun();
-            timeoutId = setTimeout(() => {
-                setData(result);
+            try {
+                setLoading(true);
+                setError(null);
+                const result = await serviceFun();
+                timeoutId = setTimeout(() => {
+                    setData(result);
+                    setLoading(false);
+                    console.log(result);
+                }, 50);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : "Failed to fetch data");
                 setLoading(false);
-                console.log(result);
-            }, 50);//added delay to show the loading spinner in UI
+            }
         };
         fetchData();
 
@@ -23,7 +30,7 @@ function useFetch<T>({serviceFun} : FetchInputProps<T>) {
         }
     }, []);
 
-    return {data, loading};
+    return {data, loading, error};
 }
 
 export default useFetch;

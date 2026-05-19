@@ -3,9 +3,10 @@ import useFetch from "../hooks/useFetch";
 import { fetchRecipieCategories } from "../services/recipeService";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import ErrorMessage from "../components/ErrorMessage";
 
 function Home() {
-    const {data, loading} = useFetch({ serviceFun: fetchRecipieCategories });
+    const {data, loading, error} = useFetch({ serviceFun: fetchRecipieCategories });
 
     useEffect(() => {
         console.log(data);
@@ -13,6 +14,7 @@ function Home() {
 
     if(loading) return <Spinner/>
     return (<>
+        {error && <ErrorMessage message={error} />}
         <h1 className="text-4xl text-center m-5">Recipe Category</h1>
         <div className="flex flex-wrap justify-center">
             {data.map(category => (

@@ -5,12 +5,13 @@ import useFetch from "../hooks/useFetch";
 import { searchRecipies } from "../services/recipeService";
 import type { RecipeDetails } from "../types/recipe";
 import Spinner from "../components/Spinner";
+import ErrorMessage from "../components/ErrorMessage";
 
 function SearchResults(){
 
     const [queryParam] = useSearchParams();
     const searchValue = queryParam.get("query");
-    const { data: searchResults, loading } = useFetch({
+    const { data: searchResults, loading, error } = useFetch({
         serviceFun: () => searchValue ? searchRecipies(searchValue) : Promise.resolve([])
     });
 
@@ -25,7 +26,9 @@ function SearchResults(){
 
     if (loading) return <Spinner/>;
 
-    return(<>{searchResults && searchResults.length > 0 ?
+    return(<>
+        {error && <ErrorMessage message={error} />}
+        {searchResults && searchResults.length > 0 ?
         searchResults.map((recipe) => <RecipeCard key={recipe.idMeal} recipeDetails={recipe}/>) :
         <span>No data Available</span>
     }</>)

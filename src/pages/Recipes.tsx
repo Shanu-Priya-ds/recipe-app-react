@@ -4,12 +4,13 @@ import { fetchRecipiesByCategory } from "../services/recipeService";
 import type { Recipe } from "../types/recipe";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import ErrorMessage from "../components/ErrorMessage";
 
 function Recipes() {
 
     const { categoryName } = useParams();
     (categoryName && categoryName !== "")
-    const { data: categoryRecipies, loading } = useFetch(
+    const { data: categoryRecipies, loading, error } = useFetch(
         {
             serviceFun: () => (categoryName && categoryName !== "") ?
                 fetchRecipiesByCategory(categoryName) : Promise.resolve([])
@@ -25,8 +26,10 @@ function Recipes() {
     }, [categoryRecipies])
 
     if(loading) return(<Spinner/>)
-        
-    return (<div className="flex justify-center flex-wrap">
+
+    return (<>
+        {error && <ErrorMessage message={error} />}
+    <div className="flex justify-center flex-wrap">
         {categoryRecipies && categoryRecipies.map(recipe =>
             <div key={recipe.idMeal} className="flex  w-80 flex-col m-5 shadow-lg rounded-xl overflow-hidden">
                 <Link to={`/recipe/${recipe.idMeal}`}>
@@ -39,7 +42,8 @@ function Recipes() {
                 </div>
             </div>
         )}
-    </div>);
+    </div>
+    </>);
 }
 
 export default Recipes;
