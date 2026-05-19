@@ -41,7 +41,7 @@ export async function fetchRecipeDetailsById(recipeId:string):Promise<RecipeDeta
         const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
         if(response.ok){
             const data = await response.json();
-            return data.meals;
+            return data.meals ?? [];
         }else{
             throw Error(`HTTP Error: ${response.status}`);
         }
@@ -70,4 +70,17 @@ export async function searchRecipies(searchValue:string):Promise<RecipeDetails[]
         console.log(`Failed to fetch recipes for the search value ${searchValue}`);
         return [];
     }
+}
+
+export async function fetchMultipleRecipiesById(recipieIds: string[]):Promise<RecipeDetails[]>{
+    if(recipieIds.length==0) return [];
+    try{    
+        const recipes = await Promise.all(recipieIds.map(id=>fetchRecipeDetailsById(id)));//promise.all gives resolved values hot promise objects,
+        return recipes.flat();//Since each fetchRecipeDetailsById() returns an array, we get nested arrays
+        //.flat() flattens one level, giving us a single array of recipe objects
+    }catch(ex){
+        console.error("Failed to fetch favorite recipes:", ex);
+        return [];
+    }
+
 }
