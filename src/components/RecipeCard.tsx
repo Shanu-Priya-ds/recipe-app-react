@@ -4,6 +4,7 @@ import { FavoritesContext } from "../context/FavoritesContext ";
 import fav from "../assets/fav.png";
 import fav_red from "../assets/fav_red.png";
 
+
 function RecipeCard({ recipeDetails }: { recipeDetails: RecipeDetails | null }) {
 
     if (recipeDetails == null) return;

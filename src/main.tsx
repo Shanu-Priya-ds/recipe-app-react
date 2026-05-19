@@ -6,11 +6,11 @@ import { BrowserRouter } from 'react-router-dom'
 import FavoritesContextProvider from './context/FavoritesContextProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
-   <StrictMode>
+  <StrictMode>
     <BrowserRouter>
-    <FavoritesContextProvider >
-    <App />
-    </FavoritesContextProvider >
+      <FavoritesContextProvider >
+        <App />
+      </FavoritesContextProvider >
     </BrowserRouter>
   </StrictMode>,
 )

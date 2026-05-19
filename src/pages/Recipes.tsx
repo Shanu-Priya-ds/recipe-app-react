@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 import { fetchRecipiesByCategory } from "../services/recipeService";
+import type { Recipe } from "../types/recipe";
 import { Link, useParams } from "react-router-dom";
 
 function Recipes(){
@@ -11,7 +12,12 @@ function Recipes(){
     : [];
 
     useEffect(()=>{
-        console.log(categoryRecipies);
+        if (categoryRecipies.length > 0) {
+            const existing: Recipe[] = JSON.parse(localStorage.getItem("allRecipes") || "[]");
+            const existingIds = new Set(existing.map(r => r.idMeal));
+            const newOnes = categoryRecipies.filter(r => !existingIds.has(r.idMeal));
+            localStorage.setItem("allRecipes", JSON.stringify([...existing, ...newOnes]));
+        }
     },[categoryRecipies])
 
     return (<div className="flex justify-center flex-wrap">
